@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -23,10 +25,34 @@ class MetaFieldsMixin(models.Model):
     """
     Class to contain Meta information on for Entities
     """
+    
+    class Meta:
+        abstract = True
+
     description = models.TextField(_('Description'), blank=True)
     auto_gen_description = models.BooleanField(_('Generate description automatically'), default=True,
                                                 help_text=_('Check to generate entity description automatically'+ \
                                                             ' when entity created.'))
     comments_enabled = models.BooleanField(_('Comments enabled'), default=True,
                                         help_text=_('Check to activate comments for entity.'))
+
+
+class BasePost(TimeStampMixin, MetaFieldsMixin):
+    """
+    Base class for Blog Entity
+    """
+    
+    class Meta:
+        abstract = True
+
+    def published_date(self):
+        delta = datetime.now() - self.published_at
+        if delta.days > 0:
+            pattern = _("days ago")
+            time_delta = delta.days
+        else:
+            pattern = _("hours ago")
+            time_delta = delta.hours
+        return "{0} {1}".format(time_delta, pattern)
+
 

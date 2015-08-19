@@ -25,7 +25,7 @@ class MetaFieldsMixin(models.Model):
     """
     Class to contain Meta information on for Entities
     """
-    
+
     class Meta:
         abstract = True
 
@@ -41,7 +41,7 @@ class BasePost(TimeStampMixin, MetaFieldsMixin):
     """
     Base class for Blog Entity
     """
-    
+
     class Meta:
         abstract = True
 
